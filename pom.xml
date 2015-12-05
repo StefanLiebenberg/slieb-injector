@@ -12,18 +12,20 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <plugin.jspackage>1.0-SNAPSHOT</plugin.jspackage>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.slieb.jspackage</groupId>
             <artifactId>jspackage-closure-library</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${plugin.jspackage}</version>
         </dependency>
         <dependency>
             <artifactId>jspackage-maven-plugin</artifactId>
             <groupId>org.slieb.jspackage</groupId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${plugin.jspackage}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -49,10 +51,9 @@
             <plugin>
                 <artifactId>jspackage-maven-plugin</artifactId>
                 <groupId>org.slieb.jspackage</groupId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${plugin.jspackage}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <outputFile>out.js</outputFile>
                     <useClasspath>false</useClasspath>
                     <guiceModule>slieb.injector.CompileModule</guiceModule>
                     <sources>
@@ -70,5 +71,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
