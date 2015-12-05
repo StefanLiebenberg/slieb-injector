@@ -1,17 +1,17 @@
 goog.provide('slieb.injector.Injector');
-goog.require('goog.structs.Map');
-goog.require('slieb.injector.providers.ProviderFactory');
-goog.require('slieb.injector.Scope');
-goog.require('slieb.injector.Key');
 goog.require('goog.Disposable');
+goog.require('goog.structs.Map');
 goog.require('goog.structs.Set');
+goog.require('slieb.injector.Key');
+goog.require('slieb.injector.Scope');
+goog.require('slieb.injector.providers.ProviderFactory');
 
 /**
  * @constructor
  * @extends {goog.Disposable}
  * @param {slieb.injector.Injector=} opt_parent
  */
-slieb.injector.Injector = function (opt_parent) {
+slieb.injector.Injector = function(opt_parent) {
     slieb.injector.Injector.base(this, 'constructor');
 
     /** @type {slieb.injector.Injector} */
@@ -28,7 +28,7 @@ slieb.injector.Injector = function (opt_parent) {
      */
     this.disposableInstances = new goog.structs.Set();
 
-    this.addOnDisposeCallback(goog.bind(function () {
+    this.addOnDisposeCallback(goog.bind(function() {
         this.lifecycle.dispose();
     }, this));
 };
@@ -38,14 +38,14 @@ goog.inherits(slieb.injector.Injector, goog.Disposable);
 /**
  * @return {slieb.injector.providers.ProviderFactory}
  */
-slieb.injector.Injector.prototype.getFactory = function () {
+slieb.injector.Injector.prototype.getFactory = function() {
     return this.factory;
 };
 
 /**
  *
  */
-slieb.injector.Injector.prototype.clear = function () {
+slieb.injector.Injector.prototype.clear = function() {
     this.lifecycle.dispose();
     this.lifecycle = new goog.Disposable();
 };
@@ -60,7 +60,7 @@ slieb.injector.Injector.Entry;
 /**
  * @return {slieb.injector.Injector}
  */
-slieb.injector.Injector.prototype.getParentInjector = function () {
+slieb.injector.Injector.prototype.getParentInjector = function() {
     return this.parent;
 };
 
@@ -68,7 +68,7 @@ slieb.injector.Injector.prototype.getParentInjector = function () {
  * @param key
  * @return {boolean}
  */
-slieb.injector.Injector.prototype.hasProviderForKey = function (key) {
+slieb.injector.Injector.prototype.hasProviderForKey = function(key) {
     return this.providersAndScopesMap.containsKey(key) ||
         (goog.isDefAndNotNull(this.parent) && this.parent.hasProviderForKey(key));
 };
@@ -77,7 +77,7 @@ slieb.injector.Injector.prototype.hasProviderForKey = function (key) {
  * @param {slieb.injector.Key} key
  * @return {slieb.injector.Provider}
  */
-slieb.injector.Injector.prototype.getProviderFromKey = function (key) {
+slieb.injector.Injector.prototype.getProviderFromKey = function(key) {
     if (!this.providersAndScopesMap.containsKey(key)) {
         if (goog.isDefAndNotNull(this.parent) && this.parent.hasProviderForKey(key)) {
             return this.parent.getProviderFromKey(key);
@@ -97,7 +97,7 @@ slieb.injector.Injector.prototype.getProviderFromKey = function (key) {
  * @param {function( new : T, ...) : undefined} klass
  * @return {slieb.injector.Provider<T>}
  */
-slieb.injector.Injector.prototype.getProvider = function (klass) {
+slieb.injector.Injector.prototype.getProvider = function(klass) {
     return this.getProviderFromKey(slieb.injector.Key.fromConstructor(klass));
 };
 
@@ -107,7 +107,7 @@ slieb.injector.Injector.prototype.getProvider = function (klass) {
  * @param {function( new : T) : undefined} klass
  * @return {T}
  */
-slieb.injector.Injector.prototype.getInstanceOf = function (klass) {
+slieb.injector.Injector.prototype.getInstanceOf = function(klass) {
     return this.getProvider(klass).get();
 };
 
@@ -115,7 +115,7 @@ slieb.injector.Injector.prototype.getInstanceOf = function (klass) {
  * @param {slieb.injector.Key} key
  * @return {Object}
  */
-slieb.injector.Injector.prototype.getInstanceFromKey = function (key) {
+slieb.injector.Injector.prototype.getInstanceFromKey = function(key) {
     return this.getProviderFromKey(key).get();
 };
 
@@ -125,7 +125,7 @@ slieb.injector.Injector.prototype.getInstanceFromKey = function (key) {
  * @param {slieb.injector.Scope=} opt_scope
  * @return {{provider: slieb.injector.Provider, scope: slieb.injector.Scope}}
  */
-slieb.injector.Injector.prototype.constructProvider = function (key, provider, opt_scope) {
+slieb.injector.Injector.prototype.constructProvider = function(key, provider, opt_scope) {
     var scope = goog.isDefAndNotNull(opt_scope) ? opt_scope : this.autoDetectScope(key);
     var wrappedProvider = this.factory.createProviderForScope(provider, scope);
     return {
@@ -140,11 +140,11 @@ slieb.injector.Injector.prototype.constructProvider = function (key, provider, o
  * @param {slieb.injector.Provider} provider
  * @param {slieb.injector.Scope=} opt_scope
  */
-slieb.injector.Injector.prototype.registerProvider = function (keyOrCtor, provider, opt_scope) {
+slieb.injector.Injector.prototype.registerProvider = function(keyOrCtor, provider, opt_scope) {
     var key = this.toKey_(keyOrCtor);
 
     if (this.providersAndScopesMap.containsKey(key)) {
-        throw new Error("already registered key")
+        throw new Error('already registered key');
     }
 
     this.providersAndScopesMap.set(key, this.constructProvider(key, provider, opt_scope));
@@ -153,7 +153,7 @@ slieb.injector.Injector.prototype.registerProvider = function (keyOrCtor, provid
 /**
  *
  */
-slieb.injector.Injector.prototype.disposeInstances = function () {
+slieb.injector.Injector.prototype.disposeInstances = function() {
     goog.structs.forEach(this.disposableInstances, goog.dispose);
     this.disposableInstances.clear();
 };
@@ -161,7 +161,7 @@ slieb.injector.Injector.prototype.disposeInstances = function () {
 /**
  * @param {goog.Disposable} disposable
  */
-slieb.injector.Injector.prototype.registerInstance = function (disposable) {
+slieb.injector.Injector.prototype.registerInstance = function(disposable) {
     if (disposable instanceof goog.Disposable) {
         if (disposable.isDisposed()) {
             return;
@@ -171,7 +171,7 @@ slieb.injector.Injector.prototype.registerInstance = function (disposable) {
 };
 
 /** @override */
-slieb.injector.Injector.prototype.disposeInternal = function () {
+slieb.injector.Injector.prototype.disposeInternal = function() {
     slieb.injector.Injector.base(this, 'disposeInternal');
     this.disposeInstances();
 };
@@ -182,8 +182,8 @@ slieb.injector.Injector.prototype.disposeInternal = function () {
  * @param {slieb.injector.Scope=} opt_scope
  * @template T
  */
-slieb.injector.Injector.prototype.registerMethod = function (keyOrCtor, method, opt_scope) {
-    this.registerProvider(keyOrCtor, this.factory.createFunctionProvider(method), opt_scope)
+slieb.injector.Injector.prototype.registerMethod = function(keyOrCtor, method, opt_scope) {
+    this.registerProvider(keyOrCtor, this.factory.createFunctionProvider(method), opt_scope);
 };
 
 /**
@@ -191,15 +191,15 @@ slieb.injector.Injector.prototype.registerMethod = function (keyOrCtor, method, 
  * @param {function(new: Object)} ctor
  * @param {slieb.injector.Scope=} opt_scope
  */
-slieb.injector.Injector.prototype.registerConstructor = function (key, ctor, opt_scope) {
-    this.registerProvider(key, this.factory.createConstructorProvider(ctor), opt_scope)
+slieb.injector.Injector.prototype.registerConstructor = function(key, ctor, opt_scope) {
+    this.registerProvider(key, this.factory.createConstructorProvider(ctor), opt_scope);
 };
 
 /**
  * @param {function(new: Object)} ctor
  * @param {slieb.injector.Scope=} opt_scope
  */
-slieb.injector.Injector.prototype.register = function (ctor, opt_scope) {
+slieb.injector.Injector.prototype.register = function(ctor, opt_scope) {
     this.registerConstructor(slieb.injector.Key.fromConstructor(ctor), ctor, opt_scope);
 };
 
@@ -208,7 +208,7 @@ slieb.injector.Injector.prototype.register = function (ctor, opt_scope) {
  * @return {slieb.injector.Key}
  * @private
  */
-slieb.injector.Injector.prototype.toKey_ = function (object) {
+slieb.injector.Injector.prototype.toKey_ = function(object) {
     if (object instanceof slieb.injector.Key) {
         return /** @type {slieb.injector.Key} */ (object);
     }
@@ -220,7 +220,7 @@ slieb.injector.Injector.prototype.toKey_ = function (object) {
  * @param {slieb.injector.Key} key
  * @return {slieb.injector.Scope}
  */
-slieb.injector.Injector.prototype.autoDetectScope = function (key) {
+slieb.injector.Injector.prototype.autoDetectScope = function(key) {
     return slieb.injector.Injector.autoDetectScope(key.getKeyClass());
 };
 
@@ -229,7 +229,7 @@ slieb.injector.Injector.prototype.autoDetectScope = function (key) {
  * @param {Function?} ctor
  * @return {slieb.injector.Scope}
  */
-slieb.injector.Injector.autoDetectScope = function (ctor) {
+slieb.injector.Injector.autoDetectScope = function(ctor) {
     var s = slieb.injector.Scope;
     if (ctor != null) {
         var disposable = ctor.prototype instanceof goog.Disposable;
@@ -250,7 +250,7 @@ slieb.injector.Injector.autoDetectScope = function (ctor) {
 /**
  * @return {slieb.injector.Injector}
  */
-slieb.injector.Injector.prototype.getChildInjector = function () {
+slieb.injector.Injector.prototype.getChildInjector = function() {
     var injector = new slieb.injector.Injector(this);
     this.registerDisposable(injector);
     return injector;
@@ -259,7 +259,7 @@ slieb.injector.Injector.prototype.getChildInjector = function () {
 /**
  * @return {slieb.injector.Injector}
  */
-slieb.injector.Injector.getGlobalInjector = function () {
+slieb.injector.Injector.getGlobalInjector = function() {
     if (!goog.isDefAndNotNull(slieb.injector.Injector.global_) || slieb.injector.Injector.global_.isDisposed()) {
         /**
          * @type {slieb.injector.Injector}

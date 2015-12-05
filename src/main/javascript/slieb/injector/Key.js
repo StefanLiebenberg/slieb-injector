@@ -8,7 +8,7 @@ goog.require('goog.structs.Map');
  * @param {function(new: T)} klass
  * @template T
  */
-slieb.injector.Key = function (id, klass) {
+slieb.injector.Key = function(id, klass) {
     this.id = id;
     this.keyClass = klass;
 };
@@ -16,22 +16,22 @@ slieb.injector.Key = function (id, klass) {
 /**
  * @return {string|*}
  */
-slieb.injector.Key.prototype.getId = function () {
+slieb.injector.Key.prototype.getId = function() {
     return this.id;
 };
 
 /**
  * @return {function(new: T)}
  */
-slieb.injector.Key.prototype.getKeyClass = function () {
+slieb.injector.Key.prototype.getKeyClass = function() {
     return this.keyClass;
 };
 
 /**
  * @return {string}
  */
-slieb.injector.Key.prototype.toString = function () {
-    return "{Key:" + this.id + "}";
+slieb.injector.Key.prototype.toString = function() {
+    return '{Key:' + this.id + '}';
 };
 
 
@@ -45,7 +45,7 @@ slieb.injector.Key.keys = new goog.structs.Map();
 /**
  * @constructor
  */
-slieb.injector.KeyBuilder = function () {
+slieb.injector.KeyBuilder = function() {
     this.ctor = null;
     this.named = null;
 };
@@ -54,7 +54,7 @@ slieb.injector.KeyBuilder = function () {
  * @param {string} name
  * @return {slieb.injector.KeyBuilder}
  */
-slieb.injector.KeyBuilder.prototype.withName = function (name) {
+slieb.injector.KeyBuilder.prototype.withName = function(name) {
     goog.asserts.assert(!goog.isDefAndNotNull(this.named));
     this.named = name;
     return this;
@@ -64,7 +64,7 @@ slieb.injector.KeyBuilder.prototype.withName = function (name) {
  * @param {function(new: Object)} ctor
  * @return {slieb.injector.KeyBuilder}
  */
-slieb.injector.KeyBuilder.prototype.withConstructor = function (ctor) {
+slieb.injector.KeyBuilder.prototype.withConstructor = function(ctor) {
     goog.asserts.assert(!goog.isDefAndNotNull(this.ctor));
     this.ctor = ctor;
     return this;
@@ -74,7 +74,7 @@ slieb.injector.KeyBuilder.prototype.withConstructor = function (ctor) {
 /**
  * @return {slieb.injector.Key}
  */
-slieb.injector.KeyBuilder.prototype.build = function () {
+slieb.injector.KeyBuilder.prototype.build = function() {
     goog.asserts.assert(this.ctor != null);
 
     var id = 'ctor_' + goog.getUid(this.ctor);
@@ -92,7 +92,7 @@ slieb.injector.KeyBuilder.prototype.build = function () {
 /**
  * @return {slieb.injector.KeyBuilder}
  */
-slieb.injector.KeyBuilder.aKey = function () {
+slieb.injector.KeyBuilder.aKey = function() {
     return new slieb.injector.KeyBuilder();
 };
 
@@ -101,7 +101,7 @@ slieb.injector.KeyBuilder.aKey = function () {
  * @param {function(new: Object)} ctor
  * @return {slieb.injector.Key}
  */
-slieb.injector.Key.fromConstructor = function (ctor) {
+slieb.injector.Key.fromConstructor = function(ctor) {
     return slieb.injector.KeyBuilder.aKey().withConstructor(ctor).build();
 };
 
@@ -110,7 +110,7 @@ slieb.injector.Key.fromConstructor = function (ctor) {
  * @param {string} name
  * @return {slieb.injector.Key}
  */
-slieb.injector.Key.fromConstructorWithName = function (ctor, name) {
+slieb.injector.Key.fromConstructorWithName = function(ctor, name) {
     return slieb.injector.KeyBuilder.aKey()
         .withConstructor(ctor)
         .withName(name).build();
