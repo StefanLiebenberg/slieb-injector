@@ -5,7 +5,7 @@ goog.require('slieb.injector.Provider');
 /**
  * @constructor
  * @extends {goog.Disposable}
- * @implements slieb.injector.Provider.<T>
+ * @implements slieb.injector.Provider
  * @template T
  *
  * @param {slieb.injector.Injector} injector
